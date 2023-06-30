@@ -3,7 +3,7 @@ import { TaskList } from "./taskList.js";
 export class taskListDOM extends TaskList {
   constructor(elements) {
     super();
-    this.fetchTasks();
+    super.fetchTasks();
 
     this.elements = elements;
     this.renderDate();
