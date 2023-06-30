@@ -124,11 +124,8 @@ export class taskListDOM extends TaskList {
   }
 
   listItemHandler(event) {
-    if (!event.target.className.includes("checkbox")) {
-      return;
-    }
-
-    const taskID = +event.target.closest("li").dataset.id;
+    const parentListItem = event.target.closest(".list-item");
+    const taskID = Number(parentListItem.dataset.id);
     this.toggleTaskIsCompleted(taskID);
   }
 }
