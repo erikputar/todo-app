@@ -11,7 +11,7 @@ export class taskListDOM extends TaskList {
     this.renderTasksAmount();
     this.renderTasks();
     this.setupFormHandler();
-    this.setupListItemHandler();
+    this.setuplistSectionHandler();
   }
 
   // RENDERING COMPUTED VALUES
@@ -113,17 +113,17 @@ export class taskListDOM extends TaskList {
 
   // CHECKBOX/LIST-ITEM HANDLER
 
-  setupListItemHandler() {
+  setuplistSectionHandler() {
     this.elements.incompletedList.addEventListener("change", (event) => {
-      this.listItemHandler(event);
+      this.listSectionHandler(event);
     });
 
     this.elements.completedList.addEventListener("change", (event) => {
-      this.listItemHandler(event);
+      this.listSectionHandler(event);
     });
   }
 
-  listItemHandler(event) {
+  listSectionHandler(event) {
     const parentListItem = event.target.closest(".list-item");
     const taskID = Number(parentListItem.dataset.id);
     this.toggleTaskIsCompleted(taskID);

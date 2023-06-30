@@ -7,7 +7,7 @@ const completedList = document.getElementById("completed-list");
 const submitButton = document.getElementById("submit-button");
 const addTaskForm = document.getElementById("add-task-form");
 
-const test = new taskListDOM({
+const taskList = new taskListDOM({
   dateHeading,
   tasksAmount,
   incompletedList,
