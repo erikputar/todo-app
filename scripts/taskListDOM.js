@@ -7,6 +7,8 @@ export class taskListDOM extends TaskList {
 
     this.elements = elements;
     this.renderDate();
+    this.renderPageTitle();
+    this.renderTasksAmount();
   }
 
   getCurrentDate() {
@@ -22,5 +24,17 @@ export class taskListDOM extends TaskList {
 
   renderDate() {
     this.elements.dateHeading.textContent = this.getCurrentDate();
+  }
+
+  renderPageTitle() {
+    document.title = `${this.getCurrentDate()} | TODO app`;
+  }
+
+  renderTasksAmount() {
+    const incompletedAmount = this.getIncompletedTasksAmount();
+    const completedAmount = this.getCompletedTasksAmount();
+    const content = `${incompletedAmount} incomplete,${completedAmount} complete`;
+
+    this.elements.tasksAmount.textContent = content;
   }
 }
