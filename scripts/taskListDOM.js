@@ -9,6 +9,7 @@ export class taskListDOM extends TaskList {
     this.renderDate();
     this.renderPageTitle();
     this.renderTasksAmount();
+    this.renderInitialTasks();
   }
 
   // RENDERING COMPUTED VALUES
@@ -33,8 +34,8 @@ export class taskListDOM extends TaskList {
   }
 
   renderTasksAmount() {
-    const incompletedAmount = this.getIncompletedTasksAmount();
-    const completedAmount = this.getCompletedTasksAmount();
+    const incompletedAmount = super.getIncompletedTasksAmount();
+    const completedAmount = super.getCompletedTasksAmount();
     const content = `${incompletedAmount} incomplete,${completedAmount} complete`;
 
     this.elements.tasksAmount.textContent = content;
@@ -42,16 +43,29 @@ export class taskListDOM extends TaskList {
 
   // RENDER INITIAL TASKS
 
-  renderInitialCompletedTasks() {}
+  renderInitialTasks() {
+    this.tasks.forEach((task) => {
+      const taskHTML = this.createTaskHTML(task);
+
+      if (task.isCompleted) {
+        this.elements.completedList.append(taskHTML);
+      } else {
+        this.elements.incompletedList.append(taskHTML);
+      }
+    });
+  }
 
   createTaskHTML(task) {
     const li = document.createElement("li");
+    li.className = "list-item";
     const checkbox = `<input type="checkbox" ${
       task.isCompleted ? "checked" : ""
     } />`;
     const title = `<p>Title: ${task.title}</p>`;
     const description = `<p>Desc: ${task.description}</p>`;
 
-    li.append(checkbox, title, description);
+    li.innerHTML = checkbox + title + description;
+
+    return li;
   }
 }

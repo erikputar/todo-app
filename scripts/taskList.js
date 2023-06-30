@@ -1,7 +1,8 @@
 export class TaskList {
   // data structures
-
   tasks = [];
+
+  constructor() {}
 
   fetchTasks() {
     this.tasks = [
@@ -27,21 +28,6 @@ export class TaskList {
   }
 
   // computed values
-
-  getPageTitle() {
-    return `${this.getCurrentDate()} | TODO app`;
-  }
-
-  getCurrentDate() {
-    const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
-
-    return formattedDate;
-  }
 
   getTasksByCompletedStatus(completedStatus) {
     const filteredTasks = [];
