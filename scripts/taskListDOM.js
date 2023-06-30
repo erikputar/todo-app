@@ -16,6 +16,10 @@ export class taskListDOM extends TaskList {
 
   // RENDERING COMPUTED VALUES
 
+  renderDate() {
+    this.elements.dateHeading.textContent = this.getCurrentDate();
+  }
+
   getCurrentDate() {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -25,10 +29,6 @@ export class taskListDOM extends TaskList {
     });
 
     return formattedDate;
-  }
-
-  renderDate() {
-    this.elements.dateHeading.textContent = this.getCurrentDate();
   }
 
   renderPageTitle() {
@@ -49,15 +49,16 @@ export class taskListDOM extends TaskList {
     this.elements.incompletedList.innerHTML = "";
     this.elements.completedList.innerHTML = "";
 
-    this.tasks.forEach((task) => {
-      const taskHTML = this.createTaskHTML(task);
+    this.tasks.forEach((task) => this.renderTask(task));
+  }
 
-      if (task.isCompleted) {
-        this.elements.completedList.prepend(taskHTML);
-      } else {
-        this.elements.incompletedList.prepend(taskHTML);
-      }
-    });
+  renderTask(task) {
+    const taskHTML = this.createTaskHTML(task);
+    if (task.isCompleted) {
+      this.elements.completedList.prepend(taskHTML);
+    } else {
+      this.elements.incompletedList.prepend(taskHTML);
+    }
   }
 
   createTaskHTML(task) {
@@ -78,10 +79,9 @@ export class taskListDOM extends TaskList {
   // ACTIONS
 
   addTask(title, description) {
-    const taskId = super.addTask(title, description);
-    const task = super.getTaskById(taskId);
+    super.addTask(title, description);
     this.renderTasksAmount();
-    this.renderTasks(task);
+    this.renderTasks();
   }
 
   toggleTaskIsCompleted(taskId) {
@@ -111,7 +111,7 @@ export class taskListDOM extends TaskList {
     return { taskTitle, taskDescription };
   }
 
-  // CHECKBOX/LIST-ITEM HANDLER
+  // CHECKBOX/LIST-ITEM/LIST-SECTION HANDLER
 
   setuplistSectionHandler() {
     this.elements.incompletedList.addEventListener("change", (event) => {
