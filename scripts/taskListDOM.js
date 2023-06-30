@@ -45,16 +45,13 @@ export class taskListDOM extends TaskList {
 
   // RENDERING DATA STRUCTURE
 
-  //   renderTasks() {
-  //     this.tasks.forEach((task) => this.renderTask(task));
-  //   }
-
   renderTasks() {
     this.elements.incompletedList.innerHTML = "";
     this.elements.completedList.innerHTML = "";
 
     this.tasks.forEach((task) => {
       const taskHTML = this.createTaskHTML(task);
+
       if (task.isCompleted) {
         this.elements.completedList.prepend(taskHTML);
       } else {
@@ -83,6 +80,7 @@ export class taskListDOM extends TaskList {
   addTask(title, description) {
     const taskId = super.addTask(title, description);
     const task = super.getTaskById(taskId);
+    this.renderTasksAmount();
     this.renderTasks(task);
   }
 
@@ -113,7 +111,7 @@ export class taskListDOM extends TaskList {
     return { taskTitle, taskDescription };
   }
 
-  // CHECKBOX HANDLER
+  // CHECKBOX/LIST-ITEM HANDLER
 
   setupListItemHandler() {
     this.elements.incompletedList.addEventListener("change", (event) => {
