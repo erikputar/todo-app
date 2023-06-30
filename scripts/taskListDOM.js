@@ -11,6 +11,8 @@ export class taskListDOM extends TaskList {
     this.renderTasksAmount();
   }
 
+  // RENDERING COMPUTED VALUES
+
   getCurrentDate() {
     const currentDate = new Date();
     const formattedDate = currentDate.toLocaleDateString("en-US", {
@@ -36,5 +38,20 @@ export class taskListDOM extends TaskList {
     const content = `${incompletedAmount} incomplete,${completedAmount} complete`;
 
     this.elements.tasksAmount.textContent = content;
+  }
+
+  // RENDER INITIAL TASKS
+
+  renderInitialCompletedTasks() {}
+
+  createTaskHTML(task) {
+    const li = document.createElement("li");
+    const checkbox = `<input type="checkbox" ${
+      task.isCompleted ? "checked" : ""
+    } />`;
+    const title = `<p>Title: ${task.title}</p>`;
+    const description = `<p>Desc: ${task.description}</p>`;
+
+    li.append(checkbox, title, description);
   }
 }

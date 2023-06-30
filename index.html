@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <title>Document</title>
   </head>
   <body>
@@ -18,7 +19,13 @@
       </section>
       <section class="completed-section">
         <h2>Complete</h2>
-        <ul id="completed-list"></ul>
+        <ul id="completed-list">
+          <li class="list-item" data-id="nek id">
+            <input type="checkbox" class="checkbox" />
+            <p>${task title}</p>
+            <p>${task description}</p>
+          </li>
+        </ul>
       </section>
       <section class="add-task-section">
         <form id="add-task-form">
