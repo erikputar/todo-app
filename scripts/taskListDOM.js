@@ -45,17 +45,22 @@ export class taskListDOM extends TaskList {
 
   // RENDERING DATA STRUCTURE
 
-  renderTasks() {
-    this.tasks.forEach((task) => this.renderTask(task));
-  }
+  //   renderTasks() {
+  //     this.tasks.forEach((task) => this.renderTask(task));
+  //   }
 
-  renderTask(task) {
-    const taskHTML = this.createTaskHTML(task);
-    if (task.isCompleted) {
-      this.elements.completedList.prepend(taskHTML);
-    } else {
-      this.elements.incompletedList.prepend(taskHTML);
-    }
+  renderTasks() {
+    this.elements.incompletedList.innerHTML = "";
+    this.elements.completedList.innerHTML = "";
+
+    this.tasks.forEach((task) => {
+      const taskHTML = this.createTaskHTML(task);
+      if (task.isCompleted) {
+        this.elements.completedList.prepend(taskHTML);
+      } else {
+        this.elements.incompletedList.prepend(taskHTML);
+      }
+    });
   }
 
   createTaskHTML(task) {
@@ -78,17 +83,13 @@ export class taskListDOM extends TaskList {
   addTask(title, description) {
     const taskId = super.addTask(title, description);
     const task = super.getTaskById(taskId);
-    this.renderTask(task);
+    this.renderTasks(task);
   }
 
   toggleTaskIsCompleted(taskId) {
     super.toggleTaskIsCompleted(taskId);
-    const taskElement = document.querySelector(`[data-id="${taskId}"]`);
-    console.log(taskElement);
-    taskElement.remove();
-
-    const task = this.getTaskById(taskId);
-    this.renderTask(task);
+    this.renderTasksAmount();
+    this.renderTasks();
   }
 
   // SETUP FORM
@@ -131,6 +132,5 @@ export class taskListDOM extends TaskList {
 
     const taskID = +event.target.closest("li").dataset.id;
     this.toggleTaskIsCompleted(taskID);
-    this.renderTasksAmount();
   }
 }
