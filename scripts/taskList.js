@@ -76,11 +76,15 @@ export class TaskList {
   }
 
   addTask(title, description) {
+    const taskId = this.tasks.length + 1;
+
     this.tasks.push({
-      id: this.tasks.length + 1,
+      id: taskId,
       title: title,
       description: description,
       isCompleted: false,
     });
+
+    return taskId;
   }
 }

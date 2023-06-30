@@ -9,7 +9,9 @@ export class taskListDOM extends TaskList {
     this.renderDate();
     this.renderPageTitle();
     this.renderTasksAmount();
-    this.renderInitialTasks();
+    this.renderTasks();
+    this.setupFormHandler();
+    this.setupListItemHandler();
   }
 
   // RENDERING COMPUTED VALUES
@@ -41,24 +43,26 @@ export class taskListDOM extends TaskList {
     this.elements.tasksAmount.textContent = content;
   }
 
-  // RENDER INITIAL TASKS
+  // RENDERING DATA STRUCTURE
 
-  renderInitialTasks() {
-    this.tasks.forEach((task) => {
-      const taskHTML = this.createTaskHTML(task);
+  renderTasks() {
+    this.tasks.forEach((task) => this.renderTask(task));
+  }
 
-      if (task.isCompleted) {
-        this.elements.completedList.append(taskHTML);
-      } else {
-        this.elements.incompletedList.append(taskHTML);
-      }
-    });
+  renderTask(task) {
+    const taskHTML = this.createTaskHTML(task);
+    if (task.isCompleted) {
+      this.elements.completedList.prepend(taskHTML);
+    } else {
+      this.elements.incompletedList.prepend(taskHTML);
+    }
   }
 
   createTaskHTML(task) {
     const li = document.createElement("li");
     li.className = "list-item";
-    const checkbox = `<input type="checkbox" ${
+    li.dataset.id = task.id;
+    const checkbox = `<input type="checkbox" class="checkbox" ${
       task.isCompleted ? "checked" : ""
     } />`;
     const title = `<p>Title: ${task.title}</p>`;
@@ -67,5 +71,66 @@ export class taskListDOM extends TaskList {
     li.innerHTML = checkbox + title + description;
 
     return li;
+  }
+
+  // ACTIONS
+
+  addTask(title, description) {
+    const taskId = super.addTask(title, description);
+    const task = super.getTaskById(taskId);
+    this.renderTask(task);
+  }
+
+  toggleTaskIsCompleted(taskId) {
+    super.toggleTaskIsCompleted(taskId);
+    const taskElement = document.querySelector(`[data-id="${taskId}"]`);
+    console.log(taskElement);
+    taskElement.remove();
+
+    const task = this.getTaskById(taskId);
+    this.renderTask(task);
+  }
+
+  // SETUP FORM
+
+  setupFormHandler() {
+    this.elements.addTaskForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const { taskTitle, taskDescription } = this.getFormData();
+      this.addTask(taskTitle, taskDescription);
+
+      event.target.reset();
+    });
+  }
+
+  getFormData() {
+    const formData = new FormData(this.elements.addTaskForm);
+    const taskTitle = formData.get("title");
+    const taskDescription = formData.get("description");
+
+    return { taskTitle, taskDescription };
+  }
+
+  // CHECKBOX HANDLER
+
+  setupListItemHandler() {
+    this.elements.incompletedList.addEventListener("change", (event) => {
+      this.listItemHandler(event);
+    });
+
+    this.elements.completedList.addEventListener("change", (event) => {
+      this.listItemHandler(event);
+    });
+  }
+
+  listItemHandler(event) {
+    if (!event.target.className.includes("checkbox")) {
+      return;
+    }
+
+    const taskID = +event.target.closest("li").dataset.id;
+    this.toggleTaskIsCompleted(taskID);
+    this.renderTasksAmount();
   }
 }

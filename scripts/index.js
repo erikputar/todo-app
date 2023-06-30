@@ -15,5 +15,3 @@ const test = new taskListDOM({
   submitButton,
   addTaskForm,
 });
-
-console.log(test.elements.dateHeading.textContent);
